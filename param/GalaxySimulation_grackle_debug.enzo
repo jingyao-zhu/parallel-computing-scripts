@@ -1,0 +1,139 @@
+#
+# AMR PROBLEM DEFINITION FILE: 
+# 	Galaxy Simulation
+
+#  define problem
+ProblemType                = 31      // Galaxy Simulation
+TopGridRank                = 3
+TopGridDimensions          = 256 256 256 //256 in Munier version
+SelfGravity                = 1       // gravity on
+TopGridGravityBoundary     = 1       // isolated gravity BCs
+LeftFaceBoundaryCondition  = 2 2 2    // 2-inflow
+RightFaceBoundaryCondition = 1 1 1   // 1-outflow
+ZEUSQuadraticArtificialViscosity = 2.0
+BaryonSelfGravityApproximation = 0
+UnigridTranspose           = 0
+GalaxySimulationUseMetallicityField   = 1 // tracer of disk gas for us
+
+GalaxySimulationDiskRadius            = 0.3 // not what you think it is
+GalaxySimulationRefineAtStart         = 1
+
+# Gaseous Disk Params
+GalaxySimulationDiskPosition    	= 0.5 0.5 0.5
+GalaxySimulationGasMass        		= 1.e9       // Msun
+GalaxySimulationDiskScaleHeightR	= 4.0e-3      //Mpc
+GalaxySimulationDiskScaleHeightz	= 8.0e-4 //1.86024e-4      //Mpc
+GalaxySimulationTruncationRadius      = 18.0e-3     //Mpc
+
+# Gaseous Halo Params
+GalaxySimulationGasHalo            = 0        //  halo
+GalaxySimulationGasHaloScaleRadius = 8e-3 //7.3707e-3     // Mpc
+GalaxySimulationGasHaloDensity     = 1.e-27; // cgs
+ 
+# Pre-Shock Ambient Halo
+GalaxySimulationInitialTemperature      = 2.1252e7 //1199219.3517       // Kelvin
+GalaxySimulationUniformDensity          = 3.369045e-29//1.84562780554e-29  // g/cm^3
+
+
+GalaxySimulationAngularMomentum         = 0.0 0.0 1.0 //0.0 0.342 -0.93969 //0.0 0.0 -1.0
+ 
+# Post-Shock Wind
+# 0 - No Wind
+# 1 - Constant Values (specified below)
+# 2 - Lookup table (ICMinflow_data.in)
+GalaxySimulationRPSWind = 1
+GalaxySimulationRPSWindDensity     = 3.36E-29            // g/cm^3
+GalaxySimulationRPSWindPressure    = 9.8422e-14         // dynes/cm^2
+GalaxySimulationRPSWindVelocity    = 0.0 0.0 0.0 // cm/s
+GalaxySimulationRPSWindShockSpeed  = 0.0  //5e6 //56969941.          // cm/s
+GalaxySimulationRPSWindDelay       = 3.15576e16 //3.16E15            // seconds
+
+# Stellar Disk/Bulge and Dark Matter 
+DiskGravity                        = 1
+DiskGravityPosition                = 0.5 0.5 0.5
+DiskGravityStellarDiskMass         = 3.e9         // Msun
+DiskGravityStellarDiskScaleHeightR = 2.5e-3        // Mpc
+DiskGravityStellarDiskScaleHeightz = 5.e-4 //2.5e-4 //1.75e-4 //7.e-4 //6.75e-4        // Mpc
+DiskGravityStellarBulgeMass        = 1.e6   //worked with 1e10and3e10 //3e10  Msun
+DiskGravityStellarBulgeR           = 5.e-4 //6e-4//1.e-3 //2.20e-3      // Mpc
+DiskGravityDarkMatterR             = 1.19e-2 //2.0e-2 //2.3e-2 //5.20e-2 //1.5e-2 //2.3e-2 //3.151E-2        // Mpc
+DiskGravityDarkMatterDensity       = 5.925e-25 //4.1856e-25 //3.8e-25 //2.882e-25 //2.211e-25 //5.07e-25 //3.8e-25 //3.09E-25   // CGS
+
+# Set units / box size
+DensityUnits          = 1e-27          # Related to LCDM Critical Density [ CGS ]
+LengthUnits           = 4.9376e23 #2.7774e23 #3.3946e23 #4.0118e23  # 130 kpc 96 kpc 50 kpc 45 from 36 kpc in cm
+TimeUnits             = 3.1557e+13
+GravitationalConstant = 8.3469e-7  # 4 pi G_cgs * DensUn * TimeUn^2
+
+#  set I/O and stop/start parameters
+dtDataDump             = 10.0 # Myr
+DataDumpName           = LowMassSFndh
+StopCycle 	       = 100000
+ParallelRootGridIO     = 0
+WriteExternalAccel     = 1
+OutputTemperature      = 1
+
+#
+#  set hydro parameters 
+#
+Gamma                       = 1.6667
+PPMDiffusionParameter       = 0       // diffusion off
+CourantSafetyNumber         = 0.3
+RootGridCourantSafetyNumber = 0.5 // reduce time step on root 
+#RadiativeCooling            = 1
+FluxCorrection              = 1
+ConservativeInterpolation   = 0
+HydroMethod                 = 0 //PPM //2  // ZEUS
+DualEnergyFormalism         = 1
+PhotoelectricHeating        = 0
+#PhotoelectricHeatingRate    = 8.5e-26
+#IsothermalEquationOfState   = 0
+#IsothermalTemperature       = 1.0e4  // in K
+
+RadiativeCooling             = 1
+MetalCooling                 = 1
+MultiSpecies                 = 1
+
+use_grackle                 = 1
+#with_radiative_cooling      = 1
+#primordial_chemistry        = 0    // 0/1=no/yes primordial_chemistry network
+#H2FormationOnDust           = 0
+#metal_cooling               = 1
+UVbackground                = 1
+self_shielding_method       = 3 
+grackle_data_file           = /mnt/home/stonnesen/grackle/input/CloudyData_UVB=HM2012_shielded.h5
+#ThreeBodyRate              = only used with primordial_chemistry network?
+    
+#
+# Star Particles
+StarParticleCreation     = 4096
+StarParticleFeedback     = 4096 //deposited into cell in which SP lives
+StarMakerMassEfficiency  = 0.05
+StarFeedbackDistRadius   = 1
+StarFeedbackDistCellStep = 3
+#StarMakerTypeIaSNe            = 0
+#StarMakePlanetaryNebulae      = 0
+StarMakerOverDensityThreshold = 10.0
+StarMakerMinimumMass          = 4.0e+02
+StarMakerMinimumDynamicalTime = 1.0e+06
+OutputGriddedStarParticle     = 1
+StarEnergyToThermalFeedback   = 3.0e-06
+#StarParticleRadiativeFeedback=
+
+#
+#  set grid refinement parameters
+StaticHierarchy           = 0    // dynamic hierarchy
+MaximumRefinementLevel    = 4    // use up to 5 levels
+RefineBy                  = 2    // refinement factor
+CellFlaggingMethod        = 2    // use baryon mass for refinement 
+MinimumEfficiency         = 0.3  // fraction efficiency
+MinimumOverDensityForRefinement = 0.8 // times the initial density
+MinimumMassForRefinementLevelExponent = 0.0
+MinimumEnergyRatioForRefinement = 0.4 // min Egas/Etot for shock refinement
+RefineRegionLeftEdge            = 0.1 0.1 0.25
+RefineRegionRightEdge           = 0.95 0.95 0.98
+SubgridSizeAutoAdjust           = 1
+
+#
+#  set some global parameters
+GreensFunctionMaxNumber   = 100   // # of greens function at any one time
