@@ -1,0 +1,14 @@
+. /etc/bashrc
+############### README: simulation workflows involve calling moduleload then setlib #############################################
+############### analysis workflows: optional; will call moduleloads within slurm ################################################
+#
+#alias yton='export PATH=/mnt/home/jzhu1/build/yt-conda/bin:$PATH'
+#alias setlib='export PATH=/mnt/home/jzhu1/build/yt-conda/bin:$PATH && export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/yt-conda/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/grackle/lib:$LD_LIBRARY_PATH && echo $LD_LIBRARY_PATH'
+# updated version of setlib: load stephanie's version of yt (hdf5 and python) and grackle
+#alias setlib='export LD_LIBRARY_PATH=/mnt/home/stonnesen/grackle/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH=/mnt/home/stonnesen/yt-conda/pkgs/hdf5-1.8.18-1/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH=/mnt/home/stonnesen/yt-conda/lib:$LD_LIBRARY_PATH && echo $LD_LIBRARY_PATH && source /mnt/home/stonnesen/yt-conda/bin/activate'
+#alias setlib_jzhu='export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/grackle/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/yt-conda/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/yt-conda/bin:$LD_LIBRARY_PATH && source /mnt/home/jzhu1/build/yt-conda/bin/activate && echo $LD_LIBRARY_PATH'
+alias setlib='export LD_LIBRARY_PATH=/mnt/home/jzhu1/build/grackle/lib:$LD_LIBRARY_PATH && echo $LD_LIBRARY_PATH'
+alias bashrc='vi ~/.bashrc && source ~/.bashrc'
+alias sq='squeue -u jzhu1'
+alias 1e14='cd /mnt/ceph/users/stonnesen/jzhu1/1e14_cluster_halo_45_degree_wind'
+alias moduleload='module --force purge && module load modules && module load slurm && module load gcc && module load openmpi && module load openmpi-opa && module load hdf5 && module list'
