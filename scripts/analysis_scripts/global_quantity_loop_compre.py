@@ -8,6 +8,8 @@
 # 4. star formation rate: SFR_and_global_KS_law.py (tricky: bin size in time?)
 # 5. radius and densities: KS_law_io.py; KS_law_io_young_star_experiment.py
 
+
+
 import yt
 from yt.mods import *
 from yt.units import kpc
@@ -89,6 +91,8 @@ star_radius = np.sqrt(star_xcoord**2 + star_ycoord**2)
 # for gas and for formed stars
 # can combine the two sides for total masses
 
+# update Nov/22/2022: adding young star masses in the wl/wt sides
+
 def galaxy_mass(metal_cut=metallicity_cut_mid,
                 disk_selection=True, disk_radius=R_disk, disk_height=z_disk_thin):
 
@@ -110,6 +114,14 @@ def galaxy_mass(metal_cut=metallicity_cut_mid,
         star_mass_windlead  = np.sum(star_mass[star_windlead_mask]).in_units("Msun").value
         star_mass_windtrail = np.sum(star_mass[star_windtrail_mask]).in_units("Msun").value
 
+
+        # young stars
+        youngstar_windlead_mask  = (ds.current_time - formation_time.in_units('Myr') <= 10.) & (star_ycoord<=0)
+        youngstar_windtrail_mask = (ds.current_time - formation_time.in_units('Myr') <= 10.) & (star_ycoord>0)
+        youngstar_mass_windlead  = np.sum(star_mass[youngstar_windlead_mask]).in_units("Msun").value
+        youngstar_mass_windtrail = np.sum(star_mass[youngstar_windtrail_mask]).in_units("Msun").value
+
+
     # metal cut with spatial (disk) restriction
     else:
 
@@ -129,8 +141,23 @@ def galaxy_mass(metal_cut=metallicity_cut_mid,
         star_mass_windlead  = np.sum(star_mass[star_windlead_mask]).in_units("Msun").value
         star_mass_windtrail = np.sum(star_mass[star_windtrail_mask]).in_units("Msun").value
 
-    return np.array([gas_mass_windlead,gas_mass_windtrail,star_mass_windlead,star_mass_windtrail])
+        # young stars
+        youngstar_windlead_mask  = (ds.current_time - formation_time.in_units('Myr') <= 10.) \
+                                    & (star_ycoord<=0) \
+                                    & (star_radius <= disk_radius)
+        
+        youngstar_windtrail_mask = (ds.current_time - formation_time.in_units('Myr') <= 10.) \
+                                    & (star_ycoord>0) \
+                                    & (star_radius <= disk_radius)
+        
+        youngstar_mass_windlead  = np.sum(star_mass[youngstar_windlead_mask]).in_units("Msun").value
+        youngstar_mass_windtrail = np.sum(star_mass[youngstar_windtrail_mask]).in_units("Msun").value    
 
+
+    #return np.array([gas_mass_windlead,gas_mass_windtrail,star_mass_windlead,star_mass_windtrail])
+    return np.array([gas_mass_windlead,gas_mass_windtrail,   \
+                     star_mass_windlead,star_mass_windtrail, \
+                     youngstar_mass_windlead, youngstar_mass_windtrail])
 
 
 
